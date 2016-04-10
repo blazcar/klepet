@@ -18,9 +18,18 @@ a {
   margin-bottom: 1em;
 }
 
+
 #dodanaSlika{
   padding-left: 20px;
   width: 200px;
+}
+
+
+
+#dodanVideo{
+  width: 200px;
+  height: 150px;
+  padding-left: 20px;
 }
 
 
