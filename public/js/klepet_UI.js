@@ -12,10 +12,18 @@ function divElementHtmlTekst(sporocilo) {
   return $('<div></div>').html('<i>' + sporocilo + '</i>');
 }
 
+function jeSlika(sporocilo){
+  sporocilo = sporocilo.replace(new RegExp('\\b'+'\(https://|http://)(.*?).(jpg|png|gif)'+'\\b', 'gi'), "<img id = \"dodanaSlika\" src=\""+sporocilo+"\">");
+  return sporocilo;
+}
+
+
 function procesirajVnosUporabnika(klepetApp, socket) {
   var sporocilo = $('#poslji-sporocilo').val();
   sporocilo = dodajSmeske(sporocilo);
-  var sistemskoSporocilo;
+  var procesirano1 = jeSlika(sporocilo);
+  //var procesirano2 = jeVideo(sporocilo);
+   var sistemskoSporocilo;
 
   if (sporocilo.charAt(0) == '/') {
     sistemskoSporocilo = klepetApp.procesirajUkaz(sporocilo);
@@ -26,6 +34,12 @@ function procesirajVnosUporabnika(klepetApp, socket) {
     sporocilo = filtirirajVulgarneBesede(sporocilo);
     klepetApp.posljiSporocilo(trenutniKanal, sporocilo);
     $('#sporocila').append(divElementEnostavniTekst(sporocilo));
+    if(procesirano1 != sporocilo){
+      $('#sporocila').append(procesirano1);
+    }
+    /*if(procesirano2 != sporocilo){
+      $('#sporocila').append(procesirano2);
+    }*/
     $('#sporocila').scrollTop($('#sporocila').prop('scrollHeight'));
   }
 
@@ -76,6 +90,17 @@ $(document).ready(function() {
   socket.on('sporocilo', function (sporocilo) {
     var novElement = divElementEnostavniTekst(sporocilo.besedilo);
     $('#sporocila').append(novElement);
+    var procesirano1 = sporocilo.besedilo;
+    procesirano1 = procesirano1.replace(new RegExp('\\b(.*?): \\b', 'gi'), '');
+    var procesirano11 = jeSlika(procesirano1);
+    //var procesirano22 = jeVideo(procesirano1);
+    if(procesirano1 != procesirano11){
+      $('#sporocila').append(procesirano11);
+    }
+    /*if(procesirano1 != procesirano22){
+       $('#sporocila').append(procesirano22);
+    }*/
+    $('#sporocila').scrollTop($('#sporocila').prop('scrollHeight'));
   });
   
   socket.on('kanali', function(kanali) {

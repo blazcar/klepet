@@ -18,6 +18,12 @@ a {
   margin-bottom: 1em;
 }
 
+#dodanaSlika{
+  padding-left: 20px;
+  width: 200px;
+}
+
+
 #sporocila {
   width: 85%;
   height: 300px;
